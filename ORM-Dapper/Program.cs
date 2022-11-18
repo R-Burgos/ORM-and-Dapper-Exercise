@@ -16,37 +16,36 @@ namespace ORM_Dapper
             IDbConnection conn = new MySqlConnection(connString);
 
             //FOR PART 1-----------------------------------------------------------------------------------------------------
-            //var repo = new DapperDepartmentRepository(conn);
+            #region Part 1
+            var repo = new DapperDepartmentRepository(conn);
 
-            ////To List all departments to console
-            //Console.WriteLine("Current Departments:");
-            //Console.WriteLine("---------------------");
-            //var depts = repo.GetAllDepartments();
-            //foreach (var dept in depts)
-            //{
-            //    Console.WriteLine(dept.Name);
-            //}
-            //Console.WriteLine("---------------------");
-
-
-            //Console.WriteLine("Type a new Department name");
-            //var newDepartment = Console.ReadLine();
-            //repo.InsertDepartment(newDepartment);
-            //var departments = repo.GetAllDepartments();
-            //foreach (var dept in departments)
-            //{
-            //    Console.WriteLine(dept.Name);
-            //}
+            Console.WriteLine("*----------------------------------------------------*");
+            //To List all departments to console
+            Console.WriteLine(" Current Departments:");
+            Console.WriteLine(" ---------------------");
+            var depts = repo.GetAllDepartments();
+            foreach (var dept in depts)
+            {
+                Console.WriteLine($" {dept.Name}");
+            }
+            Console.WriteLine(" ---------------------");
 
 
-            //git remote add origin git @github.com: R - Burgos / ORM_Dapper_Part2.git
-            //git branch -M main
-            //git push - u origin main
+            Console.WriteLine(" Type a new Department name");
+            var newDepartment = Console.ReadLine();
+            repo.InsertDepartment(newDepartment);
+            var departments = repo.GetAllDepartments();
+            foreach (var dept in departments)
+            {
+                Console.WriteLine($" {dept.Name}");
+            }
+            #endregion
 
             //FOR PART 2-----------------------------------------------------------------------------------------------------
-
+            #region Part 2
             //LIST ALL PRODUCTS TO CONSOLE
             var repoProducts = new DapperProductRepository(conn);
+            Console.WriteLine("*----------------------------------------------------*");
             Console.WriteLine(" Current Products:");
             Console.WriteLine(" ---------------------");
             var prods = repoProducts.GetAllProducts();
@@ -102,7 +101,7 @@ namespace ORM_Dapper
                         Console.WriteLine($" CategoryID: {c.CategoryID} is {c.Name}"); //FOREACH LOOP TO LIST CATEGORIES
                     }
                     Console.WriteLine("");
-                    Console.WriteLine("Your product belongs to which category?");
+                    Console.WriteLine(" Your product belongs to which category?");
                     var userCatID = Console.ReadLine().ToLower();
                     int newProductCat = 0;
 
@@ -145,8 +144,8 @@ namespace ORM_Dapper
                             newProductCat = 9;
                             break;
                         default:
-                            newProductCat = 0;
-                            Console.WriteLine(" CategoryID 0: Other assigned.");
+                            newProductCat = 10;
+                            Console.WriteLine(" CategoryID 10: Other assigned.");
                             break;
                     }
                     Console.WriteLine(" How many to stock");
@@ -161,6 +160,7 @@ namespace ORM_Dapper
 
             //LIST ALL PRODUCTS TO CONSOLE AGAIN
             prods = repoProducts.GetAllProducts();
+            Console.WriteLine("*----------------------------------------------------*");
             foreach (var p in prods)
             {
                 Console.WriteLine($" ProductID:{p.ProductID}--------------------");
@@ -181,7 +181,9 @@ namespace ORM_Dapper
             }
 
             //ASKING USER IF THEY WANT TO UPDATE A PRODUCT
+            Console.WriteLine("*----------------------------------------------------*");
             Console.WriteLine(" Do you want to update a product?");
+            Console.WriteLine(" Yes / No");
             var userUpdateInput = Console.ReadLine().ToLower();
             switch (userUpdateInput)
             {
@@ -250,8 +252,8 @@ namespace ORM_Dapper
                             productToUpdate.CategoryID = 9;
                             break;
                         default:
-                            productToUpdate.CategoryID = 0;
-                            Console.WriteLine(" CategoryID 0: Other assigned.");
+                            productToUpdate.CategoryID = 10;
+                            Console.WriteLine(" CategoryID 10: Other assigned.");
                             break;
                     }
                     Console.WriteLine(" Updated On Sale =");
@@ -284,6 +286,7 @@ namespace ORM_Dapper
 
             }
             prods = repoProducts.GetAllProducts(); //UPDATE PRODS TO CALL ALL PRODUCTS TO CONSOLE TO SEE UPDATED PRODUCT
+            Console.WriteLine("*----------------------------------------------------*");
             foreach (var p in prods)
             {
                 Console.WriteLine($" ProductID:{p.ProductID}--------------------");
@@ -303,6 +306,70 @@ namespace ORM_Dapper
                 Console.WriteLine("");
             }
 
+            Console.WriteLine("");
+            Console.WriteLine("*----------------------------------------------------*");
+            Console.WriteLine(" Do you want to delete a product?"); //ASKING USER IF THEY WANT TO DELETE A PRODUCT
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(" WARNING: THIS IS NOT REVERSABLE");
+            Console.WriteLine(" The product will be deleted from all records.");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine(" Yes / No");
+            var userDeleteProduct = Console.ReadLine().ToLower();
+            switch (userDeleteProduct) //SWITCH AGAIN 
+            {
+                case "y":
+                case "yes":
+                case "yup":
+                case "okay":
+                case "ok":
+                case "sure":
+                case "affirmative":
+                case "yea":
+                case "yeah":
+                case "true":
+                    Console.WriteLine(" Please enter the item's ProductID to be deleted:"); 
+                    var itemTBD = int.Parse(Console.ReadLine());
+                    var byeBye = repoProducts.GetProductById(itemTBD); 
+
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine(" The following item will be deleted:");
+                    Console.WriteLine($" ProductID: {byeBye.ProductID}");
+                    Console.WriteLine($" {byeBye.Name}");
+                    Console.WriteLine(" ..........");
+                    Console.WriteLine(" Product has been deleted");
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    repoProducts.DeleteProduct(byeBye.ProductID); //PRODUCT IS DELETED HERE
+                    Console.WriteLine(" Please review the product list to ensure your item was deleted.\n");
+                    Console.ReadLine();
+
+                    prods = repoProducts.GetAllProducts(); //UPDATE PRODS TO CALL ALL PRODUCTS TO CONSOLE TO SEE UPDATED PRODUCT 
+                    foreach (var p in prods)
+                    {
+                        Console.WriteLine($" ProductID:{p.ProductID}--------------------");
+                        Console.WriteLine($" * {p.Name} @ ${p.Price}");
+                        Console.WriteLine($" Stock Level: {p.StockLevel}");
+                        if (p.OnSale == 1)
+                        {
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.WriteLine(" ~!!! Currently on SALE !!!~");
+                            Console.ForegroundColor = ConsoleColor.Gray;
+                        }
+                        else
+                        {
+                            Console.WriteLine(" No current sales promotion on this item.");
+                        }
+                        Console.WriteLine($" CategoryID: {p.CategoryID}");
+                        Console.WriteLine("");
+                    }
+                    break;
+                default:
+                    Console.WriteLine(" No items will be deleted.");
+                    break;
+            }
+
+            Console.ReadLine();
+
+            #endregion
         }
     }
 

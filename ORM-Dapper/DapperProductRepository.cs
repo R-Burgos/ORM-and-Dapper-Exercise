@@ -26,6 +26,14 @@ namespace ORM_Dapper
 
         }
 
+        public void DeleteProduct(int id)
+        {
+            _connection.Execute("DELETE FROM SALES WHERE ProductID = @id;", new { id = id});
+            _connection.Execute("DELETE FROM REVIEWS WHERE ProductID = @id;", new { id = id });
+            _connection.Execute("DELETE FROM PRODUCTS WHERE ProductID = @id;", new { id = id });
+
+        }
+
         public IEnumerable<Product> GetAllProducts()
         {
             return _connection.Query<Product>("SELECT * FROM Products;").ToList();
@@ -48,5 +56,7 @@ namespace ORM_Dapper
                 id = product.ProductID
             });
         }
+
+        //public void DeleteProduct()
     }
 }
