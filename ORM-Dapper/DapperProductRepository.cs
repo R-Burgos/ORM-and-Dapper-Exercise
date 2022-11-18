@@ -19,8 +19,6 @@ namespace ORM_Dapper
 
         public void CreateProduct(string name, double price, int categoryID, int stock)
         {
-           //throw new NotImplementedException();
-
             _connection.Execute("INSERT INTO PRODUCTS (Name, Price, CategoryID, StockLevel) VALUES (@productName, @productPrice, @productCategoryID, @stock);",
              new { productName = name, productPrice = price, productCategoryID = categoryID, stock = stock });
 
@@ -56,7 +54,5 @@ namespace ORM_Dapper
                 id = product.ProductID
             });
         }
-
-        //public void DeleteProduct()
     }
 }

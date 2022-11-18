@@ -19,26 +19,26 @@ namespace ORM_Dapper
             #region Part 1
             var repo = new DapperDepartmentRepository(conn);
 
-            Console.WriteLine("*----------------------------------------------------*");
-            //To List all departments to console
-            Console.WriteLine(" Current Departments:");
-            Console.WriteLine(" ---------------------");
-            var depts = repo.GetAllDepartments();
-            foreach (var dept in depts)
-            {
-                Console.WriteLine($" {dept.Name}");
-            }
-            Console.WriteLine(" ---------------------");
+            //Console.WriteLine("*----------------------------------------------------*");
+            ////To List all departments to console
+            //Console.WriteLine(" Current Departments:");
+            //Console.WriteLine(" ---------------------");
+            //var depts = repo.GetAllDepartments();
+            //foreach (var dept in depts)
+            //{
+            //    Console.WriteLine($" {dept.Name}");
+            //}
+            //Console.WriteLine(" ---------------------");
 
 
-            Console.WriteLine(" Type a new Department name");
-            var newDepartment = Console.ReadLine();
-            repo.InsertDepartment(newDepartment);
-            var departments = repo.GetAllDepartments();
-            foreach (var dept in departments)
-            {
-                Console.WriteLine($" {dept.Name}");
-            }
+            //Console.WriteLine(" Type a new Department name");
+            //var newDepartment = Console.ReadLine();
+            //repo.InsertDepartment(newDepartment);
+            //var departments = repo.GetAllDepartments();
+            //foreach (var dept in departments)
+            //{
+            //    Console.WriteLine($" {dept.Name}");
+            //}
             #endregion
 
             //FOR PART 2-----------------------------------------------------------------------------------------------------
@@ -47,6 +47,8 @@ namespace ORM_Dapper
             var repoProducts = new DapperProductRepository(conn);
             Console.WriteLine("*----------------------------------------------------*");
             Console.WriteLine(" Current Products:");
+            Console.WriteLine(" Press a key to continue.");
+            Console.ReadLine();
             Console.WriteLine(" ---------------------");
             var prods = repoProducts.GetAllProducts();
             foreach (var p in prods)
@@ -152,9 +154,13 @@ namespace ORM_Dapper
                     var newProductStock = int.Parse(Console.ReadLine());
                     Console.WriteLine(" Thank you. Product is being added.");
                     repoProducts.CreateProduct(newProductName, newProductPrice, newProductCat, newProductStock); //PRODUCT IS CREATED HERE AFTER ALL USER INPUTS
+                    Console.WriteLine(" Press a key to continue.");
+                    Console.ReadLine();
                     break;
                 default:
-                    Console.WriteLine(" No products will be added. Thank you.");
+                    Console.WriteLine(" No products will be added.");
+                    Console.WriteLine(" Press a key to continue.");
+                    Console.ReadLine();
                     break;
             }
 
@@ -279,9 +285,13 @@ namespace ORM_Dapper
                     }
                     repoProducts.UpdateProduct(productToUpdate); //PRODUCT IS UPDATED
                     Console.WriteLine(" Product has been updated:");
+                    Console.WriteLine(" Press a key to continue.");
+                    Console.ReadLine();
                     break;
                 default:
-                    Console.WriteLine(" No products will be updated. Thank you.");
+                    Console.WriteLine(" No products will be updated.");
+                    Console.WriteLine(" Press a key to continue.");
+                    Console.ReadLine();
                     break;
 
             }
@@ -361,14 +371,16 @@ namespace ORM_Dapper
                         Console.WriteLine($" CategoryID: {p.CategoryID}");
                         Console.WriteLine("");
                     }
+                    Console.WriteLine(" Press a key to continue.");
+                    Console.ReadLine();
                     break;
                 default:
                     Console.WriteLine(" No items will be deleted.");
+                    Console.WriteLine(" Press a key to continue.");
+                    Console.ReadLine();
                     break;
             }
-
-            Console.ReadLine();
-
+            
             #endregion
         }
     }
